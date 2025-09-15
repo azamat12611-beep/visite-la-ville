@@ -1,0 +1,548 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon cours de français - Les endroits en ville</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 4px dashed #fcb69f;
+        }
+        
+        .header h1 {
+            color: #e74c3c;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .section h2 {
+            color: #e74c3c;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .vocab-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .vocab-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .vocab-fr {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .vocab-ru {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .text-section {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 2px solid #667eea;
+        }
+        
+        .sentence {
+            padding: 15px;
+            margin: 15px 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            border-left: 4px solid #667eea;
+        }
+        
+        .question {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #2c3e50;
+            border-left: 4px solid #3498db;
+        }
+        
+        .quiz-section {
+            background-color: #fff8e1;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #ffb300;
+        }
+        
+        .quiz-question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-question h3 {
+            margin-top: 0;
+            color: #e74c3c;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .option {
+            padding: 12px 20px;
+            background-color: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .option:hover {
+            background-color: #e3f2fd;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background-color: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .feedback {
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: none;
+        }
+        
+        .correct {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+        }
+        
+        .incorrect {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 2px solid #f44336;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .final-task {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .final-task h2 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .user-input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid #4facfe;
+            font-size: 1.1rem;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        .congrats {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 15px;
+            margin-top: 30px;
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 1.5rem;
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .vocab-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 Bonjour, mon élève ! 🌟</h1>
+            <p>Let's learn French together! Today's topic: <strong>Les endroits en ville</strong> (Places in the city)</p>
+        </div>
+        
+        <div class="section">
+            <h2>📚 Notre vocabulaire d'aujourd'hui!</h2>
+            <p>Look at these wonderful places in the city! Let's learn them together:</p>
+            
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <div class="vocab-fr">la gare</div>
+                    <div class="vocab-ru">вокзал</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">le restaurant</div>
+                    <div class="vocab-ru">ресторан</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">l'hôtel</div>
+                    <div class="vocab-ru">отель</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">le musée</div>
+                    <div class="vocab-ru">музей</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">la librairie</div>
+                    <div class="vocab-ru">книжный магазин</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">la poste</div>
+                    <div class="vocab-ru">почта</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">le cinéma</div>
+                    <div class="vocab-ru">кинотеатр</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">la ville</div>
+                    <div class="vocab-ru">город</div>
+                </div>
+            </div>
+            
+            <p><strong>And some useful verbs:</strong></p>
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <div class="vocab-fr">il va</div>
+                    <div class="vocab-ru">он идёт</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">il mange</div>
+                    <div class="vocab-ru">он ест</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">il achète</div>
+                    <div class="vocab-ru">он покупает</div>
+                </div>
+                <div class="vocab-card">
+                    <div class="vocab-fr">C'est...</div>
+                    <div class="vocab-ru">Это...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📖 Let's read together! "Une journée à Paris"</h2>
+            <p>We'll read one sentence at a time. I'll ask you questions to check your understanding!</p>
+            
+            <div class="text-section">
+                <div class="sentence">
+                    <p><strong>Aujourd'hui, Marc est à Paris. Il visite la ville.</strong></p>
+                    <div class="question">Where is Marc today? (Hint: Look at the first few words!)</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- D'abord, il va à la gare. Le train arrive.</strong></p>
+                    <div class="question">Where does Marc go first? (Look for "il va à...")</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Ensuite, il a faim. Il mange dans un restaurant. C'est bon !</strong></p>
+                    <div class="question">Where does Marc eat? And what does "C'est bon!" mean?</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Après, il va à l'hôtel. Sa chambre est petite mais jolie.</strong></p>
+                    <div class="question">Where does Marc go after the restaurant?</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Il veut voir un tableau. Il va au musée. C'est intéressant !</strong></p>
+                    <div class="question">Why does Marc go to the museum? What does he want to see?</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Il achète un livre à la librairie. Et une carte postale aussi.</strong></p>
+                    <div class="question">What does Marc buy at the bookstore (librairie)?</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Il va à la poste pour envoyer la carte postale à sa mère.</strong></p>
+                    <div class="question">Where does Marc go to send the postcard to his mother?</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Le soir, il va au cinéma. Le film est amusant.</strong></p>
+                    <div class="question">Where does Marc go in the evening? And how is the movie?</div>
+                </div>
+                
+                <div class="sentence">
+                    <p><strong>- Marc aime Paris. C'est une belle ville !</strong></p>
+                    <div class="question">Does Marc like Paris? What does he think about the city?</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Let's test your knowledge! Quiz Time!</h2>
+            <p>Try to answer these questions based on what you've learned. Don't worry if you make mistakes - that's how we learn!</p>
+            
+            <div class="quiz-section">
+                <div class="quiz-question">
+                    <h3>Question 1: Où est Marc aujourd'hui?</h3>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 1, 'a')">a) À Rome</div>
+                        <div class="option" onclick="selectOption(this, 1, 'b')">b) À Paris</div>
+                        <div class="option" onclick="selectOption(this, 1, 'c')">c) À Londres</div>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 2: Où mange Marc?</h3>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 2, 'a')">a) Au musée</div>
+                        <div class="option" onclick="selectOption(this, 2, 'b')">b) Au restaurant</div>
+                        <div class="option" onclick="selectOption(this, 2, 'c')">c) À la poste</div>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 3: Qu'est-ce qu'il achète à la librairie?</h3>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 3, 'a')">a) Un billet de train</div>
+                        <div class="option" onclick="selectOption(this, 3, 'b')">b) Un livre et une carte postale</div>
+                        <div class="option" onclick="selectOption(this, 3, 'c')">c) Un café</div>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 4: Où envoie-t-il la carte postale?</h3>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 4, 'a')">a) À la gare</div>
+                        <div class="option" onclick="selectOption(this, 4, 'b')">b) Au cinéma</div>
+                        <div class="option" onclick="selectOption(this, 4, 'c')">c) À la poste</div>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 5: Où va Marc le soir?</h3>
+                    <div class="options">
+                        <div class="option" onclick="selectOption(this, 5, 'a')">a) À l'hôtel</div>
+                        <div class="option" onclick="selectOption(this, 5, 'b')">b) Au cinéma</div>
+                        <div class="option" onclick="selectOption(this, 5, 'c')">c) Au musée</div>
+                    </div>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+                
+                <div class="button-container">
+                    <button onclick="checkAnswers()">Check My Answers!</button>
+                    <button onclick="showAnswers()">Show Correct Answers</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="final-task">
+            <h2>✏️ Your Turn! Mini-task</h2>
+            <p>Now it's your turn! Write a simple sentence about where YOU go in your city, using the new words you've learned.</p>
+            <p>Example: <em>"Je vais au cinéma avec mes amis."</em></p>
+            <textarea class="user-input" placeholder="Write your sentence here..."></textarea>
+            <button onclick="checkSentence()">Check My Sentence!</button>
+        </div>
+        
+        <div class="congrats" id="congratsMessage">
+            🎉 Félicitations! You've completed the lesson! 🎉
+            <br><br>
+            You're doing amazing! Keep practicing and you'll become a French expert!
+        </div>
+    </div>
+    
+    <script>
+        let selectedAnswers = {};
+        const correctAnswers = {
+            1: 'b',
+            2: 'b',
+            3: 'b',
+            4: 'c',
+            5: 'b'
+        };
+        
+        function selectOption(element, questionNum, option) {
+            // Remove selected class from all options for this question
+            const options = element.parentElement.children;
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Store selected answer
+            selectedAnswers[questionNum] = option;
+        }
+        
+        function checkAnswers() {
+            let allCorrect = true;
+            let score = 0;
+            
+            for (let i = 1; i <= 5; i++) {
+                const feedbackElement = document.getElementById(`feedback${i}`);
+                feedbackElement.style.display = 'block';
+                
+                if (!selectedAnswers[i]) {
+                    feedbackElement.innerHTML = "You didn't answer this question!";
+                    feedbackElement.className = 'feedback incorrect';
+                    allCorrect = false;
+                } else if (selectedAnswers[i] === correctAnswers[i]) {
+                    feedbackElement.innerHTML = "✅ Correct! Très bien!";
+                    feedbackElement.className = 'feedback correct';
+                    score++;
+                } else {
+                    feedbackElement.innerHTML = `❌ Not quite. The correct answer is: ${correctAnswers[i]}`;
+                    feedbackElement.className = 'feedback incorrect';
+                    allCorrect = false;
+                }
+            }
+            
+            if (allCorrect) {
+                document.getElementById('congratsMessage').style.display = 'block';
+            }
+        }
+        
+        function showAnswers() {
+            for (let i = 1; i <= 5; i++) {
+                const feedbackElement = document.getElementById(`feedback${i}`);
+                feedbackElement.innerHTML = `The correct answer is: ${correctAnswers[i]}`;
+                feedbackElement.className = 'feedback correct';
+                feedbackElement.style.display = 'block';
+            }
+            document.getElementById('congratsMessage').style.display = 'block';
+        }
+        
+        function checkSentence() {
+            const sentence = document.querySelector('.user-input').value;
+            if (sentence.trim() === '') {
+                alert("Please write a sentence first!");
+                return;
+            }
+            
+            // Simple check for French words
+            const frenchWords = ['vais', 'au', 'à la', 'cinéma', 'restaurant', 'musée', 'poste', 'gare', 'librairie', 'hôtel', 'ville'];
+            let hasFrenchWord = false;
+            
+            for (let word of frenchWords) {
+                if (sentence.toLowerCase().includes(word)) {
+                    hasFrenchWord = true;
+                    break;
+                }
+            }
+            
+            if (hasFrenchWord) {
+                alert("🌟 Excellent! You used French vocabulary correctly! Keep up the good work!");
+            } else {
+                alert("Good try! Try to include some of the French words we learned today, like 'je vais au cinéma' or 'je vais à la poste'.");
+            }
+        }
+    </script>
+</body>
+</html>
+```
